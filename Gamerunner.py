@@ -5,7 +5,8 @@ class BoardState:
     def __init__(self, n, m):
         self.n = n
         self.m = m
-        self.board = [['X' for i in range(m)] for _ in range(n)]
+        self.board = [[' ' for i in range(m)] for _ in range(n)]
+
     def print_board(self):
         result = ("----" * self.m) + "-\n"
         for i in range(len(self.board)):
@@ -15,7 +16,87 @@ class BoardState:
             result += (self.board[i][self.m - 1] + " |\n")
         result += ("----" * self.m) + "-\n"
         print(result)
+    
 
+    def move(self, move, mark):
+        i = move[0] - 1
+        j = move[1] - 1
+        self.board[i][j] = mark
+
+    def is_goal_state(self, k, move, counter):
+        if counter < 2*k - 1: return False
+        i = move[0]-1
+        j = move[1]-1
+        n = len(self.board)
+        m = len(self.board[0])
+        mark = self.board[i][j]
+
+        #Horizontal
+        mark_count = 0
+        while (j!=m and self.board[i][j]==mark):
+            mark_count += 1
+            if mark_count==k: return True
+            j+=1
+        
+        j = move[1]-1-1
+        while (j!=-1 and self.board[i][j]==mark):
+            mark_count += 1
+            if mark_count==k: return True
+            j-=1
+
+        #Vertical
+        j = move[1]-1
+        mark_count = 0
+        while (i!=n and self.board[i][j]==mark):
+            mark_count += 1
+            if mark_count==k: return True
+            i+=1
+        
+        i = move[0]-1-1
+        while (i!=-1 and self.board[i][j]==mark):
+            mark_count += 1
+            if mark_count==k: return True
+            i-=1
+
+
+        #Diagonal 1
+        i = move[0]-1
+        mark_count = 0
+        while (i!=n and j!=m and self.board[i][j]==mark):
+            mark_count += 1
+            if mark_count==k: return True
+            i+=1
+            j+=1
+        
+        i = move[0]-1-1
+        j = move[1]-1-1
+        while (i!=-1 and j!=-1 and self.board[i][j]==mark):
+            mark_count += 1
+            if mark_count==k: return True
+            i-=1
+            j-=1
+
+
+        #Diagonal 2
+        i = move[0]-1
+        j = move[1]-1
+        mark_count = 0
+        while (i!=-1 and j!=m and self.board[i][j]==mark):
+            mark_count += 1
+            if mark_count==k: return True
+            i-=1
+            j+=1
+        
+        i = move[0]
+        j = move[1]-1-1
+        while (i!=n and j!=-1 and self.board[i][j]==mark):
+            mark_count += 1
+            if mark_count==k: return True
+            i+=1
+            j-=1
+
+        return False
+    
 
 class Game:
     def __init__(self):
@@ -25,8 +106,8 @@ class Game:
 
     def set_settings(self):
         while(True):
-            print("---SETTINGS---")
-            print("\nCurrent board size (N x M):", self.n, "by", self.m)
+            print("\n---SETTINGS---")
+            print("Current board size (N x M):", self.n, "by", self.m)
             print(f'Current game is {self.k}-in-a-row')
             print('Please select an option (character):')
             print('--change-k-in-a-row k')
@@ -40,7 +121,7 @@ class Game:
                     k = int(input("Enter k: "))
                     if k <= max(self.n, self.m):
                         self.k = k
-                    else: raise
+                    else: raise 
 
                 elif selection=='N':
                     print("Keep this value within the range 3-10")
@@ -57,12 +138,32 @@ class Game:
 
                 elif selection=='NC': break
                 else: raise
-            except:
+            except Exception:
                 print("Invalid selection. Try again.")
                 continue
 
-    def run(self, p1, p2, board):
-        pass
+
+    def run(self, p1: Human, p2, board: BoardState):
+        print(f'\n{p1.name} vs. {p2.name}\n')
+        current_player = p2
+        counter = 0
+        move=[]
+        while not board.is_goal_state(self.k, move, counter):
+            if current_player==p2: current_player = p1
+            else: current_player = p2
+            board.print_board()
+            print(f'\n{current_player.name}\'s turn to play!')
+            move = current_player.choose_move(board.board)
+            board.move(move, current_player.mark)
+            counter += 1
+        
+        board.print_board()
+        print(f'{current_player.name} wins!\n')
+
+        
+
+
+
 
     def start(self):
         while(True):
@@ -78,9 +179,9 @@ class Game:
                 self.set_settings()
 
             elif selection=='MP':
-                player1 = input("Please enter the name of Player 1: ")
-                player2 = input("Please enter the name of Player 2: ")
-                self.run(Human(player1), Human(player2), BoardState())
+                player1 = input("Please enter the name of Player 1 (X): ")
+                player2 = input("Please enter the name of Player 2 (O): ")
+                self.run(Human(player1, 'X'), Human(player2, 'O'), BoardState(self.n, self.m))
 
             elif selection=='SP': 
                 #TODO
@@ -92,5 +193,5 @@ class Game:
                 print("Invalid option. Try again.\n")
                 continue
 
-#game = Game()
-#game.start()
+game = Game()
+game.start()
