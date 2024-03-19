@@ -24,7 +24,7 @@ class BoardState:
         self.board[i][j] = mark
 
     def is_goal_state(self, k, move, counter):
-        if counter < 2*k - 1: return False
+        if counter < 2*k - 1: return False, False
         i = move[0]-1
         j = move[1]-1
         n = len(self.board)
@@ -35,13 +35,13 @@ class BoardState:
         mark_count = 0
         while (j!=m and self.board[i][j]==mark):
             mark_count += 1
-            if mark_count==k: return True
+            if mark_count==k: return True, False
             j+=1
         
         j = move[1]-1-1
         while (j!=-1 and self.board[i][j]==mark):
             mark_count += 1
-            if mark_count==k: return True
+            if mark_count==k: return True, False
             j-=1
 
         #Vertical
@@ -49,13 +49,13 @@ class BoardState:
         mark_count = 0
         while (i!=n and self.board[i][j]==mark):
             mark_count += 1
-            if mark_count==k: return True
+            if mark_count==k: return True, False
             i+=1
         
         i = move[0]-1-1
         while (i!=-1 and self.board[i][j]==mark):
             mark_count += 1
-            if mark_count==k: return True
+            if mark_count==k: return True, False
             i-=1
 
 
@@ -64,7 +64,7 @@ class BoardState:
         mark_count = 0
         while (i!=n and j!=m and self.board[i][j]==mark):
             mark_count += 1
-            if mark_count==k: return True
+            if mark_count==k: return True, False
             i+=1
             j+=1
         
@@ -72,7 +72,7 @@ class BoardState:
         j = move[1]-1-1
         while (i!=-1 and j!=-1 and self.board[i][j]==mark):
             mark_count += 1
-            if mark_count==k: return True
+            if mark_count==k: return True, False
             i-=1
             j-=1
 
@@ -83,7 +83,7 @@ class BoardState:
         mark_count = 0
         while (i!=-1 and j!=m and self.board[i][j]==mark):
             mark_count += 1
-            if mark_count==k: return True
+            if mark_count==k: return True, False
             i-=1
             j+=1
         
@@ -91,11 +91,12 @@ class BoardState:
         j = move[1]-1-1
         while (i!=n and j!=-1 and self.board[i][j]==mark):
             mark_count += 1
-            if mark_count==k: return True
+            if mark_count==k: return True, False
             i+=1
             j-=1
 
-        return False
+        if counter==self.n*self.m: return True, True
+        return False, False
     
 
 class Game:
@@ -148,7 +149,8 @@ class Game:
         current_player = p2
         counter = 0
         move=[]
-        while not board.is_goal_state(self.k, move, counter):
+        is_goal, isdraw = board.is_goal_state(self.k, move, counter)
+        while not is_goal:
             if current_player==p2: current_player = p1
             else: current_player = p2
             board.print_board()
@@ -156,13 +158,14 @@ class Game:
             move = current_player.choose_move(board.board)
             board.move(move, current_player.mark)
             counter += 1
+            is_goal, isdraw = board.is_goal_state(self.k, move, counter)
         
         board.print_board()
-        print(f'{current_player.name} wins!\n')
-
-        
-
-
+        if isdraw:
+            print("Game ends in a draw!\n")
+        else:
+            print(f'{current_player.name} wins!\n')
+            
 
 
     def start(self):
