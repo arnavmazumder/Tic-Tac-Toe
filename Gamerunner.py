@@ -24,9 +24,10 @@ class Game:
             print('--change-bot-level bl')
             print('--change-bot_time_limit bt')
             print('--no-change nc\n')
-            selection = input().upper()
+            
 
             try:
+                selection = input().upper()
                 if selection=='K':
                     k = int(input("Enter k: "))
                     if k <= max(self.n, self.m):
@@ -61,26 +62,29 @@ class Game:
             except Exception:
                 print("Invalid selection. Try again.")
                 continue
+            except KeyboardInterrupt:
+                exit(0)
 
 
     def run(self, p1: Human, p2, board: BoardState):
         print(f'\n{p1.name} vs. {p2.name}\n')
         current_player = p2
-        counter = 0
-        move=[]
-        is_goal, isdraw = board.is_goal_state(self.k, move, counter)
-        while not is_goal:
+        winner = board.is_goal_state()
+        while winner==None:
+
             if current_player==p2: current_player = p1
             else: current_player = p2
+
             board.print_board()
             print(f'\n{current_player.name}\'s turn to play!')
+
             move = current_player.choose_move(board)
-            board.move(move, current_player.mark)
-            counter += 1
-            is_goal, isdraw = board.is_goal_state(self.k, move, counter)
+            board = board.move(move)
+
+            winner = board.is_goal_state()
         
         board.print_board()
-        if isdraw:
+        if winner=='draw':
             print("Game ends in a draw!\n")
         else:
             print(f'{current_player.name} wins!\n')
@@ -96,34 +100,38 @@ class Game:
             print('--multiplayer mp')
             print('--singleplayer sp')
             print('--quit q\n')
-            selection = input().upper()
-            if selection=='S':
-                self.set_settings()
 
-            elif selection=='MP':
-                player1 = input("Please enter the name of Player 1 (X): ")
-                player2 = input("Please enter the name of Player 2 (O): ")
-                self.run(Human(player1, 'X'), Human(player2, 'O'), BoardState(self.n, self.m))
+            try:
+                selection = input().upper()
+                if selection=='S':
+                    self.set_settings()
 
-            elif selection=='SP':
-                while True:
-                    marker = input("Please select a marker (X or O): ").upper()
-                    if marker !='X' and marker!='O':
-                        print("Invalid selection. Try again.")
-                        continue
+                elif selection=='MP':
+                    player1 = input("Please enter the name of Player 1 (X): ")
+                    player2 = input("Please enter the name of Player 2 (O): ")
+                    self.run(Human(player1), Human(player2), BoardState(self.n, self.m, self.k))
+
+                elif selection=='SP':
+                    while True:
+                        marker = input("Please select a marker (X or O): ").upper()
+                        if marker !='X' and marker!='O':
+                            print("Invalid selection. Try again.")
+                            continue
+                        break
+
+                    player1 = input(f"Please enter your name ({marker}): ")
+                    if marker=='O': self.run(Bot(self.bot_level, self.bot_time_limit), Human(player1), BoardState(self.n, self.m, self.k))
+                    else: self.run(Human(player1), Bot(self.bot_level, self.bot_time_limit), BoardState(self.n, self.m, self.k))
+                    
+
+                elif selection=='Q':
                     break
+                else:
+                    print("Invalid option. Try again.\n")
+                    continue
+            except KeyboardInterrupt:
+                exit(0)
 
-                player1 = input(f"Please enter your name ({marker}): ")
-                if marker=='O': self.run(Bot('X', self.bot_level, self.bot_time_limit), Human(player1, marker), BoardState(self.n, self.m))
-                else: self.run(Human(player1, marker), Bot('O', self.bot_level, self.bot_time_limit), BoardState(self.n, self.m))
-                
-
-
-            elif selection=='Q':
-                break
-            else:
-                print("Invalid option. Try again.\n")
-                continue
 
 game = Game()
 game.start()

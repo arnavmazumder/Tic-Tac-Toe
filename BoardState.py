@@ -1,8 +1,12 @@
 class BoardState:
-    def __init__(self, n, m):
+    def __init__(self, n, m, k, board=None, next_player=None):
         self.n = n
         self.m = m
-        self.board = [[' ' for i in range(m)] for _ in range(n)]
+        self.k = k
+        if next_player==None: self.next_player = 'X'
+        else: self.next_player = next_player
+        if (board==None): self.board = [[' ' for i in range(m)] for _ in range(n)]
+        else: self.board = board
 
     def print_board(self):
         result = ("----" * self.m) + "-\n"
@@ -15,10 +19,18 @@ class BoardState:
         print(result)
     
 
-    def move(self, move, mark):
+    def move(self, move):
+        newBoard = [row.copy() for row in self.board]
+    
         i = move[0] - 1
         j = move[1] - 1
-        self.board[i][j] = mark
+        newBoard[i][j] = self.next_player
+
+        if self.next_player == 'X': next_player = 'O'
+        else: next_player = 'X'
+
+        return BoardState(self.n, self.m, self.k, newBoard, next_player)
+
     
 
     def is_valid_move(self, move):
@@ -30,77 +42,33 @@ class BoardState:
         return True
 
 
-    def is_goal_state(self, k, move, counter):
-        if counter < 2*k - 1: return False, False
-        i = move[0]-1
-        j = move[1]-1
-        n = len(self.board)
-        m = len(self.board[0])
-        mark = self.board[i][j]
+    def is_goal_state(self):
+        if self.next_player == 'X': to_check = 'O'
+        else: to_check = 'X'
 
-        #Horizontal
-        mark_count = 0
-        while (j!=m and self.board[i][j]==mark):
-            mark_count += 1
-            if mark_count==k: return True, False
-            j+=1
-        
-        j = move[1]-1-1
-        while (j!=-1 and self.board[i][j]==mark):
-            mark_count += 1
-            if mark_count==k: return True, False
-            j-=1
+        for i in range(self.n):
+            for j in range(self.m):
+                if self.board[i][j] == to_check:
 
-        #Vertical
-        j = move[1]-1
-        mark_count = 0
-        while (i!=n and self.board[i][j]==mark):
-            mark_count += 1
-            if mark_count==k: return True, False
-            i+=1
-        
-        i = move[0]-1-1
-        while (i!=-1 and self.board[i][j]==mark):
-            mark_count += 1
-            if mark_count==k: return True, False
-            i-=1
+                    #horizontal
+                    if j <= self.m - self.k and all(self.board[i][j + k] == to_check for k in range(self.k)):
+                        return 'winner'
+                    
+                    # vertical
+                    if i <= self.n - self.k and all(self.board[i + k][j] == to_check for k in range(self.k)):
+                        return 'winner'
+                    
+                    #diagonal 1
+                    if i <= self.n - self.k and j <= self.m - self.k:
+                        if all(self.board[i + k][j + k] == to_check for k in range(self.k)):
+                            return 'winner'
+                    # diagonal 2
+                    if i >= self.k - 1 and j <= self.m - self.k:
+                        if all(self.board[i - k][j + k] == to_check for k in range(self.k)):
+                            return 'winner'
 
+        # draw
+        if all(self.board[i][j]!=' ' for i in range(self.n) for j in range(self.m)):
+            return 'draw'
 
-        #Diagonal 1
-        i = move[0]-1
-        mark_count = 0
-        while (i!=n and j!=m and self.board[i][j]==mark):
-            mark_count += 1
-            if mark_count==k: return True, False
-            i+=1
-            j+=1
-        
-        i = move[0]-1-1
-        j = move[1]-1-1
-        while (i!=-1 and j!=-1 and self.board[i][j]==mark):
-            mark_count += 1
-            if mark_count==k: return True, False
-            i-=1
-            j-=1
-
-
-        #Diagonal 2
-        i = move[0]-1
-        j = move[1]-1
-        mark_count = 0
-        while (i!=-1 and j!=m and self.board[i][j]==mark):
-            mark_count += 1
-            if mark_count==k: return True, False
-            i-=1
-            j+=1
-        
-        i = move[0]
-        j = move[1]-1-1
-        while (i!=n and j!=-1 and self.board[i][j]==mark):
-            mark_count += 1
-            if mark_count==k: return True, False
-            i+=1
-            j-=1
-
-        if counter==self.n*self.m: return True, True
-        return False, False
+        return None

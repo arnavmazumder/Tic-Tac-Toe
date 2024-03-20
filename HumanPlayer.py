@@ -1,9 +1,8 @@
 from BoardState import BoardState
 
 class Human:
-    def __init__(self, name, mark):
+    def __init__(self, name):
         self.name = name
-        self.mark = mark
 
     def choose_move(self, board: BoardState):
         while(True):
@@ -13,5 +12,7 @@ class Human:
             except Exception:
                 print("Invalid move. Try again")
                 continue
+            except KeyboardInterrupt:
+                exit(0)
             return move
         
