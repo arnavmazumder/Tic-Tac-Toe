@@ -15,4 +15,3 @@ class Human:
             except KeyboardInterrupt:
                 exit(0)
             return move
-        
