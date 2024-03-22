@@ -8,7 +8,6 @@ class Game:
         self.m = 3
         self.k = 3
         self.bot_level = 'EASY'
-        self.bot_time_limit = 1.0
 
     def set_settings(self):
         while(True):
@@ -16,13 +15,11 @@ class Game:
             print("Current board size (N x M):", self.n, "by", self.m)
             print(f'Current game: {self.k}-in-a-row')
             print(f'Current bot-level: {self.bot_level}')
-            print(f'Current bot-time-limit: {self.bot_time_limit}\n')
             print('Please select an option (character):')
             print('--change-k-in-a-row k')
             print('--change-n n')
             print('--change-m m')
             print('--change-bot-level bl')
-            print('--change-bot_time_limit bt')
             print('--no-change nc\n')
             
 
@@ -50,11 +47,6 @@ class Game:
                 elif selection=='BL':
                     bot_level = input("Enter new bot-level (Easy, Medium, or Hard): ").upper()
                     if bot_level=="EASY" or bot_level=="MEDIUM" or bot_level=="HARD": self.bot_level = bot_level
-                    else: raise
-
-                elif selection=='BT':
-                    bot_tl = float(input("Enter new bot-time-limit (between 0.0 and 15.0): "))
-                    if bot_tl>0 and bot_tl<=15: self.bot_time_limit = bot_tl
                     else: raise
 
                 elif selection=='NC': break
@@ -120,8 +112,8 @@ class Game:
                         break
 
                     player1 = input(f"Please enter your name ({marker}): ")
-                    if marker=='O': self.run(Bot(self.bot_level, self.bot_time_limit), Human(player1), BoardState(self.n, self.m, self.k))
-                    else: self.run(Human(player1), Bot(self.bot_level, self.bot_time_limit), BoardState(self.n, self.m, self.k))
+                    if marker=='O': self.run(Bot(self.bot_level), Human(player1), BoardState(self.n, self.m, self.k))
+                    else: self.run(Human(player1), Bot(self.bot_level), BoardState(self.n, self.m, self.k))
                     
 
                 elif selection=='Q':

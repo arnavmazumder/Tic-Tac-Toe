@@ -4,13 +4,18 @@ import re
 from BoardState import BoardState
 
 class Bot:
-    def __init__(self, level, time_limit):
+    def __init__(self, level):
         self.name = "TTT-Engine"
-        self.time_limit = time_limit
 
-        if level=="EASY": self.max_depth = 1
-        elif level=="MEDIUM": self.max_depth = 5
-        else: self.max_depth = float('inf')
+        if level=="EASY":
+            self.max_depth = 1
+            self.time_limit = 1.0
+        elif level=="MEDIUM":
+            self.max_depth = 5
+            self.time_limit = 2.0
+        else:
+            self.max_depth = float('inf')
+            self.time_limit = 3.0
     
     def choose_move(self, board: BoardState):
 
@@ -149,7 +154,7 @@ class Bot:
 
 
         #if winning state, return maximum or minimum values
-        winner = self.__winning_state(rows, cols, diagonals, board)
+        winner = board.is_goal_state()#self.__winning_state(rows, cols, diagonals, board)
         if winner =='X': return float('inf')
         elif winner =='O': return -float('inf')
 
@@ -212,24 +217,6 @@ class Bot:
             omatches = re.findall(r'O+', seq)
             maxO = max(len(max(omatches, key=len) if omatches else ''), maxO)
         return maxX - maxO
-    
-    
-    
-    def __winning_state(self, rows, cols, diagonals, board: BoardState):
-        temp_rows = rows.copy()
-        temp_rows.extend(cols)
-        temp_rows.extend(diagonals)
-
-        for r in temp_rows:
-            if re.search(f'[X]{{{board.k}}}', r):
-                return 'X'
-            if re.search(f'[O]{{{board.k}}}', r):
-                return 'O'
-
-        if not sum(row.count(' ') for row in board.board):
-            return "draw"
-
-        return None
 
 
     def __process_board(self, board: BoardState):

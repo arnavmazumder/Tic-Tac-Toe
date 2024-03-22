@@ -52,20 +52,20 @@ class BoardState:
 
                     #horizontal
                     if j <= self.m - self.k and all(self.board[i][j + k] == to_check for k in range(self.k)):
-                        return 'winner'
+                        return to_check
                     
                     # vertical
                     if i <= self.n - self.k and all(self.board[i + k][j] == to_check for k in range(self.k)):
-                        return 'winner'
+                        return to_check
                     
                     #diagonal 1
                     if i <= self.n - self.k and j <= self.m - self.k:
                         if all(self.board[i + k][j + k] == to_check for k in range(self.k)):
-                            return 'winner'
+                            return to_check
                     # diagonal 2
                     if i >= self.k - 1 and j <= self.m - self.k:
                         if all(self.board[i - k][j + k] == to_check for k in range(self.k)):
-                            return 'winner'
+                            return to_check
 
         # draw
         if all(self.board[i][j]!=' ' for i in range(self.n) for j in range(self.m)):
