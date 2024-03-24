@@ -167,7 +167,7 @@ class Bot:
         #if (Xalmost_winning > 1 and Oalmost_winning==0): return float('inf')
         #elif(Xalmost_winning==0 and Oalmost_winning > 1): return float('inf')
 
-        val += 30 * (Xalmost_winning - Oalmost_winning)
+        val += 30 * (Xalmost_winning - 2*Oalmost_winning)
         val += maxDiff
         val += linesDiff
 
