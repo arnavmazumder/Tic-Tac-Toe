@@ -13,12 +13,48 @@ This repository contains a versatile Tic-Tac-Toe game that supports both single-
 
 ## Getting Started
 
-Instructions on setting up the project locally. Include steps to install the project, play the game, and any other necessary setup details.
+Follow these instructions to get a copy of the project up and running on your local machine.
 
 ### Prerequisites
 
-List the software, libraries, or tools needed to run your application.
+This project has been implemented with `python` 3.11.5. To install python please navigate to https://www.python.org/downloads/. Once `python` has been installed, please install `pygame` and `pygame_gui` to run the GUI interface. Note: these packages are not required for the Command-line interface. Install these packages with `pip install pygame` and `pip install pygame_gui`
 
 ### Installation
 
-Provide a step-by-step guide on how to install your application.
+To run this application, you'll need to clone the repository from GitHub and then execute one of the main program files. Here's a step-by-step guide:
+
+1. **Clone the repository**
+
+Open your terminal (Command Prompt or Bash) and enter the following command:
+
+```bash
+git clone https://github.com/arnavmazumder/Tic-Tac-Toe_Engine.git
+```
+
+1. **Navigate to the repository**
+
+Change directory to the TicTacToe repository you just cloned:
+
+```bash
+cd Tic-Tac-Toe_Engine
+```
+
+1. **Run the application**
+
+To run the **GUI interface**, execute `GameGUI.py' with:
+
+```bash
+python3 GameGUI.py
+```
+
+The GUI may include 6 dropdown menus for the following options: gamemode (multiplayer or singleplayer), n (board's number of rows), m (board's number of columns), k (number of pieces in a row required to win), bot-level (easy, medium, or hard), and your piece (X or O). After selecting these options, select the "play" button to begin the game.
+
+To run the **Command-line interface**, execute `Gamerunner.py` with:
+
+```bash
+python3 Gamerunner.py
+```
+
+Upon executing the Gamerunner, you will be prompted with some options in the following format: --OptionName command. Please type in the corresponding command of the option you would like to select and follow any displayed instructions accordingly. You may exit the main menu with the command `q`. To exit at any point during the program, use the standard `^C`.
+
+
