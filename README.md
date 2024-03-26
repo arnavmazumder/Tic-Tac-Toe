@@ -17,7 +17,14 @@ Follow these instructions to get a copy of the project up and running on your lo
 
 ### Prerequisites
 
-This project has been implemented with `python` 3.11.5. To install python please navigate to https://www.python.org/downloads/. Once `python` has been installed, please install `pygame` and `pygame_gui` to run the GUI interface. Note: these packages are not required for the Command-line interface. Install these packages with `pip install pygame` and `pip install pygame_gui`
+This project has been implemented with `python` 3.11.5. To install python please navigate to https://www.python.org/downloads/. Once `python` has been installed, please install `pygame` and `pygame_gui` to run the GUI interface. Note: these packages are not required for the Command-line interface. Install these packages with the following two commands:
+```bash
+pip install pygame
+```
+
+```bash
+pip install pygame_gui
+```
 
 ### Installation
 
