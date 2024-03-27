@@ -40,7 +40,7 @@ git clone https://github.com/arnavmazumder/Tic-Tac-Toe_Engine.git
 
 1. **Navigate to the repository**
 
-Change directory to the TicTacToe repository you just cloned:
+Change directory to the repository you just cloned:
 
 ```bash
 cd Tic-Tac-Toe_Engine
