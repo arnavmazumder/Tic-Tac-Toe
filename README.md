@@ -48,7 +48,7 @@ cd Tic-Tac-Toe_Engine
 
 1. **Run the application**
 
-To run the **GUI interface**, execute `GameGUI.py' with:
+To run the **GUI interface**, execute `GameGUI.py` with:
 
 ```bash
 python3 GameGUI.py
