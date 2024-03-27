@@ -1,4 +1,4 @@
-# Tic-Tac-Toe Application
+# Tic-Tac-Toe Engine and Game
 
 This repository contains a versatile Tic-Tac-Toe game that supports both single-player (against an AI bot) and multiplayer modes. It allows for customizable board sizes up to 10x10 and the option to set the number of pieces in a row required to win (k).
 
