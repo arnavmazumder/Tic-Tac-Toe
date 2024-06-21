@@ -1,4 +1,4 @@
-# Tic-Tac-Toe Engine and Game
+# Tic-Tac-Toe AI and Game
 
 ![hippo](https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNDJncXcyM3Q5Zjd6OXdxMjBxdzdlODZtM2N5Zmt3NGdrM3c3cWR3cyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/bUkAb0QdnLR7CSUZVu/giphy.gif)
 
