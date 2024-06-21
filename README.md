@@ -1,5 +1,7 @@
 # Tic-Tac-Toe Engine and Game
 
+![hippo](https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNWp0aXRvajNxcmp0ZjIweGhtaTBkajBkaHUyenA1bGUxc2xwY3RobCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/Otj1J41JUtJDyCZvwv/giphy.gif)
+
 This repository contains a versatile Tic-Tac-Toe game that supports both single-player (against an AI bot) and multiplayer modes. It allows for customizable board sizes up to 10x10 and the option to set the number of pieces in a row required to win (k).
 
 ## Features
